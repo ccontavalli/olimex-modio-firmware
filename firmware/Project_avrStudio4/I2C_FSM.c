@@ -43,6 +43,7 @@ typedef enum _I2C_COMMAND_CODES {
 	I2C_GET_AIN_1,
 	I2C_GET_AIN_2,
 	I2C_GET_AIN_3,
+	I2C_GET_OUTPUTS = 0x40,
 	I2C_SET_SLAVE_ADDR = 0xF0
 } I2C_COMMAND_CODES;
 
@@ -108,6 +109,9 @@ void I2C_FSM_Refresh(void)
 			case I2C_GET_AIN_2:
 			case I2C_GET_AIN_3:
 				*((uint16_t*)txBuf) = AINs_Get(i2c_command - I2C_GET_AIN_0);	
+				break;
+			case I2C_GET_OUTPUTS:
+				txBuf[0] = DOUTs_Get();
 				break;
 			default:
 				memset(txBuf, 0x00, TX_BUF_LENGTH);
