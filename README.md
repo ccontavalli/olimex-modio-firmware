@@ -23,3 +23,21 @@ or address specific needs.
   In this repository we started off with the original firmware provided by
 Olimex. Over time, you will see different changes and branches to experiment
 with additional features and various code changes. Stay tuned!
+
+
+How to compile the firmware
+===========================
+
+Make sure you have avr tools installed:
+
+    $ sudo apt-get install gcc-avr avr-libc 
+
+You should now be able to compile individual files by using:
+
+    $ avr-gcc -mmcu=atmega16 -c ./DemoSoft.c
+
+To compile the firmware, run:
+
+    $ cd build; make
+
+You should have a file 'firmware.elf' as output.
