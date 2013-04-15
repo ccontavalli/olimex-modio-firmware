@@ -43,9 +43,23 @@ typedef enum _I2C_COMMAND_CODES {
 	I2C_GET_AIN_1,
 	I2C_GET_AIN_2,
 	I2C_GET_AIN_3,
+
+        /* Extra features provided in modified firmware. If you
+         * add anything here, please add a corresponding feature
+         * in I2C_EXTRA_FEATURES, and update the code for I2C_GET_FEATURES. */
+        I2C_GET_FEATURES = 0x39,
 	I2C_GET_OUTPUTS = 0x40,
+
 	I2C_SET_SLAVE_ADDR = 0xF0
 } I2C_COMMAND_CODES;
+
+/* I2C_GET_FEATURES will return a bit mask indicating which
+ * extra features the firmware provides.
+ * This enum defines the bits returned in that bit mask. */
+typedef enum _I2C_EXTRA_FEATURES {
+  /* This means that I2C_GET_OUTPUTS command is supported. */
+  I2C_CAN_GET_OUTPUTS = 1,
+} I2C_EXTRA_FEATURES;
 
 /* DEFINE LOCAL CONSTANTS HERE */
 #define TX_BUF_LENGTH 2
@@ -113,6 +127,9 @@ void I2C_FSM_Refresh(void)
 			case I2C_GET_OUTPUTS:
 				txBuf[0] = DOUTs_Get();
 				break;
+                        case I2C_GET_FEATURES:
+                                txBuf[0] = I2C_CAN_GET_OUTPUTS;
+                                break;
 			default:
 				memset(txBuf, 0x00, TX_BUF_LENGTH);
 				break;
